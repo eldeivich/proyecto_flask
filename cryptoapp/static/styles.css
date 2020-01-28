@@ -1,0 +1,10 @@
+.deact {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: underline;
+    color: grey
+}
+
+a {
+    text-decoration: none;
+}
