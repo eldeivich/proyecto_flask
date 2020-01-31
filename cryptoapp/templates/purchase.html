@@ -4,6 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Compra de Cryptos</title>
+    <link rel="stylesheet" href="./static/styles.css">
+    <link rel="stylesheet" href="./static/min.css">
 </head>
 <body>
     <header>myCRYPTO</header>
@@ -13,16 +15,16 @@
         <a href="status">Status</a>
     </nav>
     <h1>COMPRA DE CRYPTOS</h1>
-    <form action="">
+    <form action="/purchase" method="POST">
         <input type="text" name="from" placeholder="From:">
         <input type="text" name="to" placeholder="To:">
         <input type="text" name="q" placeholder="Q">
-        <input type="button" value="calc">
+        <input type="submit" value="calc">
         <input type="text" value="qcuantity" placeholder="Q">
         <input type="text" value="pu" placeholder="P.U.">
         <a href="">Resetear</a>
         <a href="/">X</a>
-        <input type="button" value="ok" placeholder="V">
+        <input type="submit" value="ok" placeholder="V">
     </form>
     <footer>&copy; 2020 - Todos los derechos reservados</footer>
 </body>
