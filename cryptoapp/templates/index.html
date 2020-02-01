@@ -1,14 +1,8 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Página de movimientos</title>
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="stylesheet" href="./static/min.css">
-</head>
-<body>
-    <header>myCRYPTO</header>
+{% extends "base.html" %}
+    
+{% block title %} Página de movimientos {% endblock %}
+
+{% block content %}
     <nav>
         <a class="deact" href="">Inicio</a> / 
         <a href="purchase">Compra</a> / 
@@ -64,6 +58,4 @@
     </table>
     <a href="status">Status</a>
     <a href="purchase">+</a>
-    <footer>&copy; 2020 - Todos los derechos reservados</footer>
-</body>
-</html>
+{% endblock %}

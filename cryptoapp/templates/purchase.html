@@ -1,14 +1,8 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Compra de Cryptos</title>
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="stylesheet" href="./static/min.css">
-</head>
-<body>
-    <header>myCRYPTO</header>
+{% extends "base.html" %}
+    
+{% block title %} Compra de Cryptos {% endblock %}
+
+{% block content %}
     <nav>
         <a href="/">Inicio</a> / 
         <a class="deact" href="">Compra</a> / 
@@ -16,16 +10,42 @@
     </nav>
     <h1>COMPRA DE CRYPTOS</h1>
     <form action="/purchase" method="POST">
-        <input type="text" name="from" placeholder="From:">
-        <input type="text" name="to" placeholder="To:">
+        <select name="from" id="1" placeholder="From">
+            <option value="EUR">Euros</option>
+            <option value="BTC">Bitcoin</option>
+            <option value="LTC">Litecoin</option>
+            <option value="XRP">XRP</option>
+            <option value="XLM">Stellar</option>
+            <option value="USDT">Tether</option>
+            <option value="ETH">Ethereum</option>
+            <option value="EOS">EOS</option>
+            <option value="BCH">Bitcoin Cash</option>
+            <option value="BNB">Binance Coin</option>
+            <option value="TRX">Tron</option>
+            <option value="ADA">Cardano</option>
+            <option value="BSV">Bitcoin SV</option>
+        </select>
+        <select name="to" id="2" placeholder="To">
+            <option value="EUR">Euros</option>
+            <option value="BTC">Bitcoin</option>
+            <option value="LTC">Litecoin</option>
+            <option value="XRP">XRP</option>
+            <option value="XLM">Stellar</option>
+            <option value="USDT">Tether</option>
+            <option value="ETH">Ethereum</option>
+            <option value="EOS">EOS</option>
+            <option value="BCH">Bitcoin Cash</option>
+            <option value="BNB">Binance Coin</option>
+            <option value="TRX">Tron</option>
+            <option value="ADA">Cardano</option>
+            <option value="BSV">Bitcoin SV</option>
+        </select>
         <input type="text" name="q" placeholder="Q">
-        <input type="submit" value="calc">
-        <input type="text" value="qcuantity" placeholder="Q">
-        <input type="text" value="pu" placeholder="P.U.">
-        <a href="">Resetear</a>
-        <a href="/">X</a>
-        <input type="submit" value="ok" placeholder="V">
+        <input class="btn btn-b" type="submit" value="calc">
+        <input type="text" value="qcuantity" placeholder="Q" readonly>
+        <input type="text" value="pu" placeholder="P.U." readonly>
+        <a class="btn btn-b" href="">Resetear</a>
+        <a class="btn btn-c" href="/">X</a>
+        <input class="btn btn-a" type="submit" value="ok" placeholder="V">
     </form>
-    <footer>&copy; 2020 - Todos los derechos reservados</footer>
-</body>
-</html>
+{% endblock %}
