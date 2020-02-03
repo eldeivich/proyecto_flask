@@ -18,9 +18,11 @@
 ```
     pip install -r requirements.txt
 ```
-4. Crear la variable de entorno `FLASK_APP` con el valor `<nombredefichero>.py`
+4. Renombrar el archivo config_template.py a config.py y en SECRET_KEY escribir tu propia clave dentro de las comillas simples, esta clave no debe llevar comillas simples.
 
-5. Lanzar la aplicación
+5. Crear la variable de entorno `FLASK_APP` con el valor `<nombredefichero>.py`
+
+6. Lanzar la aplicación
 ```
     flask run
 ```
