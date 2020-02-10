@@ -32,7 +32,7 @@
         </div>
     </div>
         <p>Q</p>
-        {{ form.cuantia() }}
+        {{ form.cuantia(type="number") }}
         {% if form.cuantia.errors %}
             {% for error in form.cuantia.errors %}
                 <p class="field-error">{{ error }}</p>
@@ -42,14 +42,18 @@
         <p>QCuantity</p>
         {% if qcuantity %}
             <input type="text" name="qcuantity" id="qcuantity" value="{{qcuantity}}" disabled>
+            <input type="hidden" name="qcuantityh" id="qcuantityh" value="{{qcuantity}}">
         {% else %}
             <input type="text" name="qcuantity" id="qcuantity" value="" disabled>
+            <input type="hidden" name="qcuantityh" id="qcuantityh" value="">
         {% endif %}
         <p>P.U.</p>
         {% if qcuantity_unitario %}
             <input type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="{{qcuantity_unitario}}" disabled>
+            <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitarioh" value="{{qcuantity_unitario}}">
         {% else %}
             <input type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="" disabled>
+            <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitario" value="">
         {% endif %}
         <a class="btn btn-b" href="">Resetear</a>
         <a class="btn btn-c" href="/">X</a>

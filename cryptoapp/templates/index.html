@@ -27,33 +27,22 @@
             </tr>
         </tfoot>
         <tbody>
-            <tr>
-                <td>dd/mm/yyyy</td>
-                <td>hh:mm:ss</td>
-                <td>EUR</td>
-                <td>7.625,15</td>
-                <td>BTC</td>
-                <td>1,00</td>
-                <td>7625,15 €</td>
-            </tr>
-            <tr>
-                <td>dd/mm/yyyy</td>
-                <td>hh:mm:ss</td>
-                <td>BTC</td>
-                <td>0,13</td>
-                <td>LTC</td>
-                <td>20,00</td>
-                <td>0,0067 BTC</td>
-            </tr>
-            <tr>
-                <td>dd/mm/yyyy</td>
-                <td>hh:mm:ss</td>
-                <td>BTC</td>
-                <td>0,87</td>
-                <td>ETH</td>
-                <td>45,00</td>
-                <td>0,019 BTC</td>
-            </tr>
+            {% if listado | length == 0 %}
+                <tr>
+                    <td colspan="7">No hay movimientos</td>
+                </tr>
+            {% endif %}
+            {% for linea in listado %}
+                <tr>
+                    <td>{{linea[1]}}</td>
+                    <td>{{linea[2]}}</td>
+                    <td>{{linea[3]}}</td>
+                    <td>{{linea[4]}}</td>
+                    <td>{{linea[5]}}</td>
+                    <td>{{linea[6]}}</td>
+                    <td>{{linea[7]}}</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
     <a href="status">Status</a>
