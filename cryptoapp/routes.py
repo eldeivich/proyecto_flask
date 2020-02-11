@@ -4,6 +4,7 @@ import requests
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout
 from cryptoapp.forms import CryptoForm
+from .funciones import inversion
 import json
 import sqlite3
 import time
@@ -29,7 +30,6 @@ def tablaCryptos():
     try:
         response = session.get(url, params=parameters)
         data = json.loads(response.text)
-        print(data)
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
 
@@ -61,10 +61,6 @@ def consultaApi(desde, convertir_a, cuantia):
         respuesta_unidad = session.get(url_consulta,params=parametros_unidad)
         consulta = json.loads(respuesta.text)
         consulta_unidad = json.loads(respuesta_unidad.text)
-        print('----------------------------------------------------')
-        print(consulta)
-        print('----------------------------------------------------')
-        print(consulta_unidad)
     except(ConnectionError, timeout, TooManyRedirects) as e2:
         print(e2)
 
@@ -82,12 +78,16 @@ def index():
     valorUnit = []
     for fila in filas:
         fila = list(fila)
+        '''
         unidad = consultaApi(fila[3], fila[5], 1)
+        '''
+        valorUnit = round((fila[4] / fila[6]), 5)
+        '''
         valorUnit = unidad[0]['data']['quote'][fila[5]]['price']
+        '''
         fila.append(valorUnit)
         fila = tuple(fila)
         listado.append(fila)
-        print(fila)
     
     conn.close()
 
@@ -123,22 +123,11 @@ def purchase():
                 respuesta_unidad = session.get(url_consulta,params=parametros_unidad)
                 consulta = json.loads(respuesta.text)
                 consulta_unidad = json.loads(respuesta_unidad.text)
-                print('----------------------------------------------------')
-                print(consulta)
-                print('----------------------------------------------------')
-                print(consulta_unidad)
             except(ConnectionError, timeout, TooManyRedirects) as e2:
                 print(e2)
 
-            print('method:', request.method)
-            print('parameters:', request.values)
-
             qcuantity = round(consulta['data']['quote'][convertir_a]['price'], 5)
-            qcuantity_unitario = round(consulta_unidad['data']['quote'][convertir_a]['price'], 5)
-            hora = time.strftime('%H:%M:%S')
-            fecha = time.strftime('%d/%m/%Y')
-            print('la cantidad es: ', qcuantity, 'Y el precio unitario: ', qcuantity_unitario)
-            print('fecha: ', fecha, ' y hora: ', hora)
+            qcuantity_unitario = round((cuantia / qcuantity), 5)
 
             return render_template("purchase.html", form=form, qcuantity = qcuantity, qcuantity_unitario = qcuantity_unitario)
         else:
@@ -148,11 +137,9 @@ def purchase():
         convertir_a = request.form.get('convertir_a')
         cuantia = int(request.form.get('cuantia'))
         qcuantity = float(request.form.get('qcuantityh'))
-        qcuantity_unitario = float(request.form.get('qcuantity_unitarioh'))
+        qcuantity_unitario = float(round((cuantia / qcuantity), 5))
         hora = time.strftime('%H:%M:%S')
         fecha = time.strftime('%d/%m/%Y')
-
-        print('Grabo en base de datos; desde: ', desde, 'convertir a: ', convertir_a, 'cuantía: ', cuantia, 'QCuantity: ', qcuantity, 'Precio Unitario: ', qcuantity_unitario)
 
         conn = sqlite3.connect(BASE_DATOS)
         cursor = conn.cursor()
@@ -168,26 +155,8 @@ def purchase():
 
 @app.route("/status")
 def status():
-    conn = sqlite3.connect(BASE_DATOS)
-    cursor = conn.cursor()
-    query = "SELECT * from movements;"
-    filas = cursor.execute(query)
+    disponible = inversion()
+    euros_invertidos = round(disponible[0], 5)
+    valor_actual = round(disponible[1], 5)
 
-    e_invertido = ''
-    acumular = ''
-    valor_total = 0
-    for fila in filas:
-        acumular = consultaApi(fila[5], 'EUR', fila[6])
-        valor_total += acumular[0]['data']['quote']['EUR']['price']
-
-        print('----------------------------------------------------------------------')
-        print(acumular)
-        
-        if fila[3] == 'EUR':
-            e_invertido = fila[4]
-        
-    print('Euros invertidos: ', e_invertido, '; Valor Total', valor_total)
-
-    conn.close()
-
-    return render_template("status.html", e_invertido = e_invertido, valor_total = valor_total)
+    return render_template("status.html", euros_invertidos=euros_invertidos, valor_actual=valor_actual)

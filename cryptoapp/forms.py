@@ -2,29 +2,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, SubmitField, HiddenField, SelectField, IntegerField
 from wtforms.validators import DataRequired, ValidationError
 from wtforms.widgets import Select
-import sqlite3
+from .funciones import cartera
 
-BASE_DATOS = './data/data.db'
 CHOICES = (('EUR', 'Euros'), ('BTC', 'Bitcoin'), ('LTC', 'Litecoin'), ('XRP', 'XRP'), ('XLM', 'Stellar'), ('USDT', 'Tether'), ('ETH', 'Ethereum'), ('EOS', 'EOS'), ('BCH', 'Bitcoin Cash'), ('BNB', 'Binance Coin'), ('TRX', 'Tron'), ('ADA', 'Cardano'), ('BSV', 'Bitcoin SV'))
 CRYPTOS = dict(CHOICES)
 MONEDAS = {'EUR': 0, 'BTC': 0, 'LTC': 0, 'XRP': 0, 'XLM': 0, 'USDT': 0, 'ETH': 0, 'EOS': 0, 'BCH': 0, 'BNB': 0, 'TRX': 0, 'ADA': 0, 'BSV': 0}
-
-def cartera():
-    conn = sqlite3.connect(BASE_DATOS)
-    cursor = conn.cursor()
-    query = "SELECT * from movements;"
-    filas = cursor.execute(query)
-
-    for fila in filas:
-        if fila[3] == 'EUR' and fila[5] == 'BTC':
-            MONEDAS['BTC'] += fila[6]
-        if fila[3] == 'BTC' and fila[5] != 'EUR':
-            MONEDAS['BTC'] -= fila[4]
-            MONEDAS[fila[5]] += fila[6]
-
-
-    conn.close()
-    return MONEDAS
 
 def error_cuantia(form, field):
     if form.cuantia.errors:
@@ -45,10 +27,10 @@ def error_crypto_no_euro(form, field):
 def cantidad_disponible(form, field):
     disponible = cartera()
     if form.desde.data == 'BTC' and form.convertir_a.data != 'EUR':
-        if disponible[form.desde.data] < form.cuantia.data:
+        if disponible[0][form.desde.data] < form.cuantia.data:
             raise ValidationError('No Tienes BitCoins suficientes, Realiza una transacción de Euros a BitCoin')
     if form.desde.data != 'EUR':
-        if disponible[form.desde.data] < form.cuantia.data:
+        if disponible[0][form.desde.data] < form.cuantia.data:
             raise ValidationError('No tienes {} suficientes, Realiza primero una transacción de otra moneda en la que tengas credito suficiente a {}.'.format(CRYPTOS[form.desde.data], CRYPTOS[form.desde.data]))
 
 class CryptoForm(FlaskForm):
