@@ -8,61 +8,89 @@
         <a class="deact" href="">Compra</a> / 
         <a href="status">Status</a>
     </nav>
-    <h1>COMPRA DE CRYPTOS</h1>
-    <form action="/purchase" method="POST">
-        {{ form.hidden_tag() }}
-    <div class="container">
-        <div class="c5">
-            <p>From:</p>
-            {{ form.desde() }}
-            {% if form.desde.errors %}
-                {% for error in form.desde.errors %}
-                    <p class="field-error">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
+    <h1 class="titulo">COMPRA DE CRYPTOS</h1>
+    <div class="centrar">
+        <form class="pure-form" action="/purchase" method="POST">
+            {{ form.hidden_tag() }}
+        {% if o: %}
+            <p class="field-error">Un error con la base de datos ha ocurrido, por favor inténtelo en unos minutos.</p>
+        {% endif %}
+        {% if mensaje: %}
+            <p class="field-error">{{ mensaje }}</p>
+        {% endif %}
+        <div class="padre">
+            <div class="hijo">
+                <p class="enlinea">From:</p>
+                {{ form.desde() }}
+                {% if form.desde.errors %}
+                    {% for error in form.desde.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="hijo">
+                <p class="enlinea">To:</p>
+                {{ form.convertir_a() }}
+                {% if form.convertir_a.errors %}
+                    {% for error in form.convertir_a.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
-        <div class="c5">
-            <p>To:</p>
-            {{ form.convertir_a() }}
-            {% if form.convertir_a.errors %}
-                {% for error in form.convertir_a.errors %}
-                    <p class="field-error">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
+        <div class="padre">
+            <div class="hijo">
+                <p class="enlinea">Q</p>
+                {{ form.cuantia(type="number") }}
+                {{ form.calc(class="pure-button pure-button-secondary pure-button-active") }}
+                {% if form.cuantia.errors %}
+                    {% for error in form.cuantia.errors %}
+                        <p class="field-error">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="hijo">
+            <p class="enlinea">QCuantity</p>
+                {% if qcuantity %}
+                    <input class="negro" type="text" name="qcuantity" id="qcuantity" value="{{qcuantity}}" disabled>
+                    <input type="hidden" name="qcuantityh" id="qcuantityh" value="{{qcuantity}}">
+                {% else %}
+                    <input type="text" name="qcuantity" id="qcuantity" value="" disabled>
+                    <input type="hidden" name="qcuantityh" id="qcuantityh" value="">
+                {% endif %}
+            </div>
         </div>
+        <div class="padre spacee">
+            <div class="hijo">
+                <p>                           </p>
+            </div>
+            <div class="hijo">
+            <p class="enlinea">P.U.</p>
+                {% if qcuantity_unitario %}
+                    <input class="negro" type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="{{qcuantity_unitario}}" disabled>
+                    <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitarioh" value="{{qcuantity_unitario}}">
+                {% else %}
+                    <input type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="" disabled>
+                    <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitarioh" value="">
+                {% endif %}
+            </div>
+        </div>
+        <div class="padre">
+            <div class="hijo">
+                <a class="botonnaranja" href="">Resetear</a>
+            </div>
+            <div class="hijo">
+                <a class="botonrojo pad" href="/">X</a>
+            </div>
+            <div class="hijo">
+                {% if not qcuantity %}
+                    {{ form.ok(class="pure-button", disabled=True) }}
+                {% else %}
+                    {{ form.ok(class="pure-button pure-button-secondary pure-button-active") }}
+                {% endif %}
+            </div>
+        </div>
+            <!--<input class="btn btn-a" type="submit" value="ok" placeholder="V">-->
+        </form>
     </div>
-        <p>Q</p>
-        {{ form.cuantia(type="number") }}
-        {% if form.cuantia.errors %}
-            {% for error in form.cuantia.errors %}
-                <p class="field-error">{{ error }}</p>
-            {% endfor %}
-        {% endif %}
-        {{ form.calc(class="btn btn-b") }}
-        <p>QCuantity</p>
-        {% if qcuantity %}
-            <input type="text" name="qcuantity" id="qcuantity" value="{{qcuantity}}" disabled>
-            <input type="hidden" name="qcuantityh" id="qcuantityh" value="{{qcuantity}}">
-        {% else %}
-            <input type="text" name="qcuantity" id="qcuantity" value="" disabled>
-            <input type="hidden" name="qcuantityh" id="qcuantityh" value="">
-        {% endif %}
-        <p>P.U.</p>
-        {% if qcuantity_unitario %}
-            <input type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="{{qcuantity_unitario}}" disabled>
-            <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitarioh" value="{{qcuantity_unitario}}">
-        {% else %}
-            <input type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="" disabled>
-            <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitario" value="">
-        {% endif %}
-        <a class="btn btn-b" href="">Resetear</a>
-        <a class="btn btn-c" href="/">X</a>
-        {% if not qcuantity %}
-            {{ form.ok(class="btn btn-a", disabled=True) }}
-        {% else %}
-            {{ form.ok(class="btn btn-a") }}
-        {% endif %}
-
-        <!--<input class="btn btn-a" type="submit" value="ok" placeholder="V">-->
-    </form>
 {% endblock %}

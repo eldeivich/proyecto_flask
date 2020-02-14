@@ -8,8 +8,15 @@
         <a href="purchase">Compra</a> / 
         <a class="deact" href="status">Status</a>
     </nav>
-    <h1>ESTADO DE LA INVERSIÓN</h1>
-    <p>Invertido:  {{euros_invertidos}}</p>
-    <p>Valor actual:  {{valor_actual}}</p>
-    <a href="/">Volver</a>
+    <h1 class="titulo">ESTADO DE LA INVERSIÓN</h1>
+    <div class="centrar">
+        {% if mensaje %}
+            <p class="field-error">{{ mensaje }}</p>
+        {% endif %}
+        <p>Invertido:  {{euros_invertidos}}</p>
+        <p>Valor actual:  {{valor_actual}}</p>
+    </div>
+    <div class="bvolver">
+        <a class="botonverde volver" href="/">Volver</a>
+    </div>
 {% endblock %}

@@ -1,16 +1,54 @@
 from cryptoapp import app
 import sqlite3
-from requests import Request, Session
+from sqlite3 import OperationalError
+from requests import Request, Session, ConnectionError, Timeout, TooManyRedirects
+from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
 BASE_DATOS = './data/data.db'
 MONEDAS = {'EUR': 0, 'BTC': 0, 'LTC': 0, 'XRP': 0, 'XLM': 0, 'USDT': 0, 'ETH': 0, 'EOS': 0, 'BCH': 0, 'BNB': 0, 'TRX': 0, 'ADA': 0, 'BSV': 0}
 API_KEY= app.config['API_KEY']
 
+def tablaCryptos():
+    url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/map'
+
+    parameters = {
+        'symbol' : 'BTC,ETH,XRP,LTC,BCH,BNB,USDT,EOS,BSV,XLM,ADA,TRX'
+    }
+
+    headers = {
+        'Accepts' : 'application/json',
+        'X-CMC_PRO_API_KEY': API_KEY
+    }
+
+    session = Session()
+    session.headers.update(headers)
+
+    try:
+        response = session.get(url, params=parameters)
+        data = json.loads(response.text)
+    except (ConnectionError, Timeout, TooManyRedirects) as e:
+        print(e)
+
+    if data['status']['error_message'] != None:
+        return False
+    else:
+        conn = sqlite3.connect(BASE_DATOS)
+        cursor = conn.cursor()
+        try:
+            query = "INSERT into cryptos (id, symbol, name) values(?, ?, ?);"
+        except:
+            return False
+        for insert in data['data']:
+            cursor.execute(query, (insert['id'], insert['symbol'], insert['name']))
+        conn.commit()
+        conn.close()
+        return True
+    
+
 def consultaApi(desde, convertir_a, cuantia):
     url_consulta = 'https://pro-api.coinmarketcap.com/v1/tools/price-conversion'
     parametros = {'amount': cuantia, 'symbol': desde, 'convert': convertir_a}
-    parametros_unidad = {'amount': 1, 'symbol': desde, 'convert': convertir_a}
 
     headers = {
         'Accepts' : 'application/json',
@@ -22,19 +60,24 @@ def consultaApi(desde, convertir_a, cuantia):
     
     try:
         respuesta = session.get(url_consulta, params=parametros)
-        respuesta_unidad = session.get(url_consulta,params=parametros_unidad)
         consulta = json.loads(respuesta.text)
-        consulta_unidad = json.loads(respuesta_unidad.text)
     except(ConnectionError, timeout, TooManyRedirects) as e2:
         print(e2)
 
-    return consulta, consulta_unidad
+    if consulta['status']['error_message'] != None:
+        consulta = False
+
+    return consulta
 
 def cartera():
     conn = sqlite3.connect(BASE_DATOS)
     cursor = conn.cursor()
     query = "SELECT * from movements;"
-    filas = cursor.execute(query)
+    try:
+        filas = cursor.execute(query)
+    except OperationalError:
+        return True
+
     euros_invertidos = 0
 
     for fila in filas:
@@ -57,6 +100,9 @@ def cartera():
 
 def inversion():
     MONEDAS = cartera()
+    if MONEDAS == True:
+        return True
+
     euros_invertidos = MONEDAS[1]
     valor_actual = 0
 
@@ -65,7 +111,10 @@ def inversion():
             pass
         else:
             conversion = consultaApi(clave, 'EUR', valor)
-            valor_actual += conversion[0]['data']['quote']['EUR']['price']
+            if conversion == False:
+                valor = False
+                return valor
+            valor_actual += conversion['data']['quote']['EUR']['price']
 
         '''
         if fila[3] == 'BTC' and fila[5] == 'EUR':

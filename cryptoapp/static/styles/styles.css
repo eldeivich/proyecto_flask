@@ -1,0 +1,142 @@
+.deact {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: underline;
+    color: grey;
+}
+
+a {
+    text-decoration: none;
+}
+
+.field-error {
+    color: red;
+    font-size: 0.8em;
+}
+
+.centrar {
+    display: inline;
+    text-align: center;
+    text-align: -moz-center;
+}
+
+.titulo {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.volver {
+    display: initial;
+}
+
+.bvolver {
+    display: flex;
+    justify-content: center;
+}
+
+nav {
+    margin-left: 30px;
+}
+
+.inferior {
+    text-align: center;
+}
+
+.padre {
+    display: flex;
+    justify-content: center;
+}
+
+.space {
+    justify-content: space-around;
+}
+
+.spacee {
+    justify-content: space-evenly;
+}
+
+.hijo {
+    padding: 10px;
+    margin: 10px;
+}
+
+.enlinea {
+    display: inline;
+}
+
+.botonazul {
+    border: 1px solid;
+    display: block;
+    padding: 7px;
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(66, 184, 221);
+}
+
+.botonverde {
+    border: 1px solid;
+    display: block;
+    padding: 7px;
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(28, 184, 65);
+}
+
+.botonnaranja {
+    border: 1px solid;
+    display: block;
+    padding: 7px;
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(223, 117, 20);
+}
+
+.botonrojo {
+    border: 1px solid;
+    display: block;
+    padding: 7px;
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    background: rgb(202, 60, 60);
+}
+
+.pad {
+    padding: 8 24;
+}
+
+.negro {
+    color: black;
+}
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+    background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+footer {
+    margin-left: 55px;
+}

@@ -4,14 +4,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="./static/styles.css">
-    <link rel="stylesheet" href="./static/min.css">
+    <link rel="stylesheet" href="./static/styles/styles.css">
+    <link rel="stylesheet" href="./static/styles/fontawesome.css">
+    <link rel="stylesheet" href="./static/styles/fontawesome.mi.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
 </head>
 <body>
-    <header>myCRYPTO</header>
+    <h2 class="titulo">myCRYPTO</h2>
+    <hr>
     <section class="container">
         {% block content %}{% endblock %}
     </section>
     <footer>&copy; 2020 - Todos los derechos reservados</footer>
+    <br>
 </body>
 </html>
