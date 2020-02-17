@@ -70,6 +70,8 @@ def consultaApi(desde, convertir_a, cuantia):
         consulta = json.loads(respuesta.text)
     except(ConnectionError, Timeout, TooManyRedirects) as e2:
         print(e2)
+        consulta = False
+        return consulta
 
     if consulta['status']['error_message'] != None:
         consulta = False
@@ -105,6 +107,8 @@ def cartera():
     conn.close()
 
     return MONEDAS, euros_invertidos
+
+
 
 def inversion():
     MONEDACRYPTO = cartera()

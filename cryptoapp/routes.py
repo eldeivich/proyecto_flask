@@ -44,12 +44,12 @@ def index():
 def purchase():
     form = CryptoForm(request.form)
     if request.method == 'GET':
-        cartera = cartera()
-        return render_template("purchase.html", form = form, cartera=cartera)
+        carteras = cartera()
+        return render_template("purchase.html", form = form, carteras=carteras)
 
     if form.calc.data:
         if form.validate():
-            cartera = cartera()
+            carteras = cartera()
             desde = request.form.get('desde')
             convertir_a = request.form.get('convertir_a')
             cuantia = form.cuantia.data
@@ -57,18 +57,20 @@ def purchase():
             consulta = consultaApi(desde, convertir_a, cuantia)
 
             if consulta == False:
+                carteras = cartera()
                 mensaje = 'Error en la consulta a la api, vuelva a intentarlo en unos minutos.'
-                return render_template("purchase.html", form=form, mensaje=mensaje, cartera=cartera)
+                return render_template("purchase.html", form=form, mensaje=mensaje, carteras=carteras)
 
             qcuantity = consulta['data']['quote'][convertir_a]['price']
             qcuantity_unitario = (cuantia / qcuantity)
             #qcuantity_unitario = round((cuantia / qcuantity), 5)
 
-            return render_template("purchase.html", form=form, qcuantity = qcuantity, qcuantity_unitario = qcuantity_unitario, cartera=cartera)
+            return render_template("purchase.html", form=form, qcuantity = qcuantity, qcuantity_unitario = qcuantity_unitario, carteras=carteras)
         else:
-            return render_template("purchase.html", form=form, cartera=cartera)
+            carteras = cartera()
+            return render_template("purchase.html", form=form, carteras=carteras)
     elif form.ok.data:
-        cartera = cartera()
+        carteras = cartera()
         desde = request.form.get('desde')
         convertir_a = request.form.get('convertir_a')
         cuantia = form.cuantia.data
@@ -84,7 +86,8 @@ def purchase():
         try:
             cursor.execute(query, (fecha, hora, desde, cuantia, convertir_a, qcuantity))
         except OperationalError as o:
-            return render_template("purchase.html", form=form ,o=o, cartera=cartera)
+            carteras = cartera()
+            return render_template("purchase.html", form=form ,o=o, carteras=carteras)
 
         conn.commit()
         conn.close()

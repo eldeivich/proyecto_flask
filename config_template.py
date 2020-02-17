@@ -1,1 +1,3 @@
-SECRET_KEY=b'<aquí tu clave>'
+SECRET_KEY=b'<Aquí tu clave>'
+
+API_KEY='<Aquí tu Api Key>'
