@@ -13,7 +13,6 @@ import time
 
 BASE_DATOS = './data/data.db'
 API_KEY= app.config['API_KEY']
-cartera = cartera()
 tablaCryptos()
 
 
@@ -44,12 +43,13 @@ def index():
 @app.route("/purchase", methods=['GET', 'POST'])
 def purchase():
     form = CryptoForm(request.form)
-
     if request.method == 'GET':
+        cartera = cartera()
         return render_template("purchase.html", form = form, cartera=cartera)
 
     if form.calc.data:
         if form.validate():
+            cartera = cartera()
             desde = request.form.get('desde')
             convertir_a = request.form.get('convertir_a')
             cuantia = form.cuantia.data
@@ -68,6 +68,7 @@ def purchase():
         else:
             return render_template("purchase.html", form=form, cartera=cartera)
     elif form.ok.data:
+        cartera = cartera()
         desde = request.form.get('desde')
         convertir_a = request.form.get('convertir_a')
         cuantia = form.cuantia.data
