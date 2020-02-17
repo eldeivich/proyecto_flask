@@ -41,7 +41,7 @@
         <div class="padre">
             <div class="hijo">
                 <p class="enlinea">Q</p>
-                {{ form.cuantia(type="number") }}
+                {{ form.cuantia(type="number", step="0.00001") }}
                 {{ form.calc(class="pure-button pure-button-secondary pure-button-active") }}
                 {% if form.cuantia.errors %}
                     {% for error in form.cuantia.errors %}
@@ -52,7 +52,7 @@
             <div class="hijo">
             <p class="enlinea">QCuantity</p>
                 {% if qcuantity %}
-                    <input class="negro" type="text" name="qcuantity" id="qcuantity" value="{{qcuantity}}" disabled>
+                    <input class="negro" type="text" name="qcuantity" id="qcuantity" value="{{'{:.5f}'.format(qcuantity)}}" disabled>
                     <input type="hidden" name="qcuantityh" id="qcuantityh" value="{{qcuantity}}">
                 {% else %}
                     <input type="text" name="qcuantity" id="qcuantity" value="" disabled>
@@ -67,7 +67,7 @@
             <div class="hijo">
             <p class="enlinea">P.U.</p>
                 {% if qcuantity_unitario %}
-                    <input class="negro" type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="{{qcuantity_unitario}}" disabled>
+                    <input class="negro" type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="{{'{:.5f}'.format(qcuantity_unitario)}}" disabled>
                     <input type="hidden" name="qcuantity_unitarioh" id="qcuantity_unitarioh" value="{{qcuantity_unitario}}">
                 {% else %}
                     <input type="text" name="qcuantity_unitario" id="qcuantity_unitario" value="" disabled>
@@ -92,5 +92,12 @@
         </div>
             <!--<input class="btn btn-a" type="submit" value="ok" placeholder="V">-->
         </form>
+    </div>
+    <div class="menos">
+        <p>Cartera: Euro(EUR): ∞; BitCoin(BTC): {{"{:.5f}".format(cartera[0]['BTC'])}}; LiteCoin(LTC): {{"{:.5f}".format(cartera[0]['LTC'])}};</p>
+        <p>XRP(XRP): {{"{:.5f}".format(cartera[0]['XRP'])}}; Stellar(XLM): {{"{:.5f}".format(cartera[0]['XLM'])}}; Tether(USDT): {{"{:.5f}".format(cartera[0]['USDT'])}};</p>
+        <p>Ethereum(ETH): {{"{:.5f}".format(cartera[0]['ETH'])}}; EOS(EOS): {{"{:.5f}".format(cartera[0]['EOS'])}}; BitCoin Cash(BCH): {{"{:.5f}".format(cartera[0]['BCH'])}};</p>
+        <p>Binance Coin(BNB): {{"{:.5f}".format(cartera[0]['BNB'])}}; Tron(TRX): {{"{:.5f}".format(cartera[0]['TRX'])}}; cardano(ADA): {{"{:.5f}".format(cartera[0]['ADA'])}};</p>
+        <p>BitCoin SV(BSV): {{"{:.5f}".format(cartera[0]['BSV'])}}.</p>
     </div>
 {% endblock %}

@@ -6,7 +6,6 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
 BASE_DATOS = './data/data.db'
-MONEDAS = {'EUR': 0, 'BTC': 0, 'LTC': 0, 'XRP': 0, 'XLM': 0, 'USDT': 0, 'ETH': 0, 'EOS': 0, 'BCH': 0, 'BNB': 0, 'TRX': 0, 'ADA': 0, 'BSV': 0}
 API_KEY= app.config['API_KEY']
 
 def tablaCryptos():
@@ -35,14 +34,22 @@ def tablaCryptos():
     else:
         conn = sqlite3.connect(BASE_DATOS)
         cursor = conn.cursor()
+        querycon = "SELECT * from cryptos;"
+        query = "INSERT into cryptos (id, symbol, name) values(?, ?, ?);"
         try:
-            query = "INSERT into cryptos (id, symbol, name) values(?, ?, ?);"
+            filas = cursor.execute(querycon)
+            filas = cursor.fetchone()
         except:
             return False
-        for insert in data['data']:
-            cursor.execute(query, (insert['id'], insert['symbol'], insert['name']))
-        conn.commit()
-        conn.close()
+        if filas == None:
+            for insert in data['data']:
+                try:
+                    cursor.execute(query, (insert['id'], insert['symbol'], insert['name']))
+                except:
+                    return False
+            conn.commit()
+            conn.close()
+            return True
         return True
     
 
@@ -61,7 +68,7 @@ def consultaApi(desde, convertir_a, cuantia):
     try:
         respuesta = session.get(url_consulta, params=parametros)
         consulta = json.loads(respuesta.text)
-    except(ConnectionError, timeout, TooManyRedirects) as e2:
+    except(ConnectionError, Timeout, TooManyRedirects) as e2:
         print(e2)
 
     if consulta['status']['error_message'] != None:
@@ -70,6 +77,7 @@ def consultaApi(desde, convertir_a, cuantia):
     return consulta
 
 def cartera():
+    MONEDAS = {'EUR': 0, 'BTC': 0, 'LTC': 0, 'XRP': 0, 'XLM': 0, 'USDT': 0, 'ETH': 0, 'EOS': 0, 'BCH': 0, 'BNB': 0, 'TRX': 0, 'ADA': 0, 'BSV': 0}
     conn = sqlite3.connect(BASE_DATOS)
     cursor = conn.cursor()
     query = "SELECT * from movements;"
@@ -99,14 +107,14 @@ def cartera():
     return MONEDAS, euros_invertidos
 
 def inversion():
-    MONEDAS = cartera()
-    if MONEDAS == True:
+    MONEDACRYPTO = cartera()
+    if MONEDACRYPTO == True:
         return True
 
-    euros_invertidos = MONEDAS[1]
+    euros_invertidos = MONEDACRYPTO[1]
     valor_actual = 0
 
-    for clave, valor in MONEDAS[0].items():
+    for clave, valor in MONEDACRYPTO[0].items():
         if clave == 'EUR' or valor == 0:
             pass
         else:

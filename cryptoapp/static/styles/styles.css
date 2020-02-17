@@ -9,9 +9,19 @@ a {
     text-decoration: none;
 }
 
+.menos {
+    font-size: 0.8em;
+    background-color: aliceblue;
+    text-align: center;
+    line-height: 4px;
+    padding: 1px;
+}
+
 .field-error {
     color: red;
     font-size: 0.8em;
+    margin-top: auto;
+    margin-bottom: 5px;
 }
 
 .centrar {
@@ -109,7 +119,7 @@ nav {
 }
 
 .negro {
-    color: black;
+    color: black !important;
 }
 
 .button-success,

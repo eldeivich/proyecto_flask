@@ -13,8 +13,8 @@
         {% if mensaje %}
             <p class="field-error">{{ mensaje }}</p>
         {% endif %}
-        <p>Invertido:  {{euros_invertidos}}</p>
-        <p>Valor actual:  {{valor_actual}}</p>
+        <p>Invertido:  {{"{:.5f}".format(euros_invertidos)}}</p>
+        <p>Valor actual:  {{"{:.5f}".format(valor_actual)}}</p>
     </div>
     <div class="bvolver">
         <a class="botonverde volver" href="/">Volver</a>

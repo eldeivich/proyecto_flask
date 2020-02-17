@@ -5,7 +5,7 @@ from requests import Request, Session, ConnectionError, Timeout, TooManyRedirect
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 from flask_wtf import FlaskForm
 from cryptoapp.forms import CryptoForm
-from .funciones import inversion, tablaCryptos, consultaApi, tablaCryptos
+from .funciones import inversion, tablaCryptos, consultaApi, tablaCryptos, cartera
 import json
 import sqlite3
 from sqlite3 import OperationalError
@@ -13,7 +13,8 @@ import time
 
 BASE_DATOS = './data/data.db'
 API_KEY= app.config['API_KEY']
-
+cartera = cartera()
+tablaCryptos()
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -30,7 +31,8 @@ def index():
     valorUnit = []
     for fila in filas:
         fila = list(fila)
-        valorUnit = round((fila[4] / fila[6]), 5)
+        valorUnit = fila[4] / fila[6]
+        #valorUnit = round((fila[4] / fila[6]), 5)
         fila.append(valorUnit)
         fila = tuple(fila)
         listado.append(fila)
@@ -44,32 +46,34 @@ def purchase():
     form = CryptoForm(request.form)
 
     if request.method == 'GET':
-        return render_template("purchase.html", form = form)
+        return render_template("purchase.html", form = form, cartera=cartera)
 
     if form.calc.data:
         if form.validate():
             desde = request.form.get('desde')
             convertir_a = request.form.get('convertir_a')
-            cuantia = int(request.form.get('cuantia'))
+            cuantia = form.cuantia.data
 
             consulta = consultaApi(desde, convertir_a, cuantia)
 
             if consulta == False:
                 mensaje = 'Error en la consulta a la api, vuelva a intentarlo en unos minutos.'
-                return render_template("purchase.html", form=form, mensaje=mensaje)
+                return render_template("purchase.html", form=form, mensaje=mensaje, cartera=cartera)
 
-            qcuantity = round(consulta['data']['quote'][convertir_a]['price'], 5)
-            qcuantity_unitario = round((cuantia / qcuantity), 5)
+            qcuantity = consulta['data']['quote'][convertir_a]['price']
+            qcuantity_unitario = (cuantia / qcuantity)
+            #qcuantity_unitario = round((cuantia / qcuantity), 5)
 
-            return render_template("purchase.html", form=form, qcuantity = qcuantity, qcuantity_unitario = qcuantity_unitario)
+            return render_template("purchase.html", form=form, qcuantity = qcuantity, qcuantity_unitario = qcuantity_unitario, cartera=cartera)
         else:
-            return render_template("purchase.html", form=form)
+            return render_template("purchase.html", form=form, cartera=cartera)
     elif form.ok.data:
         desde = request.form.get('desde')
         convertir_a = request.form.get('convertir_a')
-        cuantia = int(request.form.get('cuantia'))
+        cuantia = form.cuantia.data
         qcuantity = float(request.form.get('qcuantityh'))
-        qcuantity_unitario = float(round((cuantia / qcuantity), 5))
+        qcuantity_unitario = float(cuantia / qcuantity)
+        #qcuantity_unitario = float(round((cuantia / qcuantity), 5))
         hora = time.strftime('%H:%M:%S')
         fecha = time.strftime('%d/%m/%Y')
 
@@ -79,7 +83,7 @@ def purchase():
         try:
             cursor.execute(query, (fecha, hora, desde, cuantia, convertir_a, qcuantity))
         except OperationalError as o:
-            return render_template("purchase.html", o=o)
+            return render_template("purchase.html", form=form ,o=o, cartera=cartera)
 
         conn.commit()
         conn.close()
@@ -96,7 +100,9 @@ def status():
         return render_template("status.html", mensaje="Error con la base de datos, Por favor inténtelo de nuevo en unos minutos.")
     elif disponible == False:
         return render_template("status.html", mensaje="Error en la consulta a la api, vuelva a intentarlo en unos minutos.")
-    euros_invertidos = round(disponible[0], 5)
-    valor_actual = round(disponible[1], 5)
+    euros_invertidos = disponible[0]
+    #euros_invertidos = round(disponible[0], 5)
+    valor_actual = disponible[1]
+    #valor_actual = round(disponible[1], 5)
 
     return render_template("status.html", euros_invertidos=euros_invertidos, valor_actual=valor_actual)
