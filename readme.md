@@ -1,3 +1,7 @@
+# Proyecto de aplicación de simulación de compra/ venta de criptomonedas para Bootcamp cero 4ª Edición.
+
+La aplicación está instalada en un servidor de Amazon Web Services en la IP: 18.223.109.83
+
 # Instrucciones de instalación:
 
 1. Crear el entorno virtual en el terminal a trabajar

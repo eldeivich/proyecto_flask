@@ -17,6 +17,14 @@ a {
     padding: 1px;
 }
 
+.coma {
+    text-align: right;
+}
+
+.centrarcab {
+    text-align: center;
+}
+
 .field-error {
     color: red;
     font-size: 0.8em;

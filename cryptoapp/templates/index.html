@@ -10,9 +10,9 @@
     </nav>
     <h1 class="titulo">MOVIMIENTOS</h1>
     <div class="centrar">
-        <table class="pure-table pure-table-horizontal">
+        <table class="pure-table pure-table-bordered">
             <thead>
-                <tr>
+                <tr class="centrarcab">
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>From</th>
@@ -22,12 +22,15 @@
                     <th>P.U.</th>
                 </tr>
             </thead>
-            <tfoot class="pure-table pure-table-horizontal">
+            <tfoot class="pure-table pure-table-bordered">
                 <tr>
-                    <th colspan="7">Datos de cryptomonedas obtenidos de la api de CoinMarketCap</th>
+                    <th colspan="7">Datos de criptomonedas obtenidos de la api de CoinMarketCap</th>
                 </tr>
                 {% if o: %}
                     <p class="field-error">Un error con la base de datos ha ocurrido, por favor inténtelo en unos minutos.</p>
+                {% endif %}
+                {% if creatabla == False: %}
+                    <p class="field-error">No se ha podido crear la tabla de criptomonedas, por favor, recargue la página.</p>
                 {% endif %}
             </tfoot>
             <tbody>
@@ -42,10 +45,10 @@
                         <td>{{linea[1]}}</td>
                         <td>{{linea[2]}}</td>
                         <td>{{linea[3]}}</td>
-                        <td>{{"{:.5f}".format(linea[4])}}</td>
+                        <td class="coma">{{linea[4]}}</td>
                         <td>{{linea[5]}}</td>
-                        <td>{{"{:.5f}".format(linea[6])}}</td>
-                        <td>{{"{:.5f}".format(linea[7])}} {{linea[3]}}</td>
+                        <td class="coma">{{linea[6]}}</td>
+                        <td class="coma">{{linea[7]}} {{linea[3]}}</td>
                     </tr>
                 {% endfor %}
             </tbody>

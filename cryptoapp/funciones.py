@@ -5,7 +5,7 @@ from requests import Request, Session, ConnectionError, Timeout, TooManyRedirect
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
-BASE_DATOS = './data/data.db'
+BASE_DATOS = './datas/datos1.db'
 API_KEY= app.config['API_KEY']
 
 def tablaCryptos():
@@ -28,15 +28,16 @@ def tablaCryptos():
         data = json.loads(response.text)
     except (ConnectionError, Timeout, TooManyRedirects) as e:
         print(e)
+        return False
 
     if data['status']['error_message'] != None:
         return False
     else:
         conn = sqlite3.connect(BASE_DATOS)
         cursor = conn.cursor()
-        querycon = "SELECT * from cryptos;"
-        query = "INSERT into cryptos (id, symbol, name) values(?, ?, ?);"
         try:
+            querycon = "SELECT * from cryptos;"
+            query = "INSERT into cryptos (id, symbol, name) values(?, ?, ?);"
             filas = cursor.execute(querycon)
             filas = cursor.fetchone()
         except:
@@ -85,7 +86,7 @@ def cartera():
     query = "SELECT * from movements;"
     try:
         filas = cursor.execute(query)
-    except OperationalError:
+    except:
         return True
 
     euros_invertidos = 0
