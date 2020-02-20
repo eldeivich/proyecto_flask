@@ -11,7 +11,7 @@ import sqlite3
 from sqlite3 import OperationalError
 import time
 
-BASE_DATOS = './datas/datos1.db'
+BASE_DATOS = './datas/{}'.format(app.config['DB_FILE'])
 API_KEY= app.config['API_KEY']
 
 @app.route("/", methods=['GET', 'POST'])

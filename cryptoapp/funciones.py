@@ -5,7 +5,7 @@ from requests import Request, Session, ConnectionError, Timeout, TooManyRedirect
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 
-BASE_DATOS = './datas/datos1.db'
+BASE_DATOS = './datas/{}'.format(app.config['DB_FILE'])
 API_KEY= app.config['API_KEY']
 
 def tablaCryptos():
