@@ -41,7 +41,7 @@
         <div class="padre">
             <div class="hijo">
                 <p class="enlinea">Q</p>
-                {{ form.cuantia(type="number", step="0.00001") }}
+                {{ form.cuantia(type="number", step="0.00001", class="number") }}
                 {{ form.calc(class="pure-button pure-button-secondary pure-button-active") }}
                 {% if form.cuantia.errors %}
                     {% for error in form.cuantia.errors %}

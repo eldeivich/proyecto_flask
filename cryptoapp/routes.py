@@ -13,10 +13,11 @@ import time
 
 BASE_DATOS = './datas/{}'.format(app.config['DB_FILE'])
 API_KEY= app.config['API_KEY']
+creatabla = tablaCryptos()
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
-    creatabla = tablaCryptos()
+    
     if creatabla == False:
         return render_template("index.html", creatabla=creatabla)
     conn = sqlite3.connect(BASE_DATOS)
@@ -33,7 +34,6 @@ def index():
         fila = list(fila)
         valorUnit = fila[4] / fila[6]
         valorUnit = '{:,.5f}'.format(valorUnit).replace(",", "@").replace(".", ",").replace("@", ".")
-        #valorUnit = round((fila[4] / fila[6]), 5)
         fila.append(valorUnit)
         valor4 = fila.pop(4)
         valor4 = '{:,.5f}'.format(valor4).replace(",", "@").replace(".", ",").replace("@", ".")
@@ -101,7 +101,7 @@ def purchase():
             cursor.execute(query, (fecha, hora, desde, cuantia, convertir_a, qcuantity))
         except:
             o=1
-            return render_template("purchase.html", form=form ,o=o, carteras=carteras, qcuantityformat=qcuantityformat, qcuantity_unitarioformat=qcuantity_unitarioformat)
+            return render_template("purchase.html", form=form ,o=o, carteras=carteras,qcuantity=qcuantity,qcuantity_unitario=qcuantity_unitario ,qcuantityformat=qcuantityformat, qcuantity_unitarioformat=qcuantity_unitarioformat)
 
         conn.commit()
         conn.close()
@@ -120,9 +120,7 @@ def status():
         return render_template("status.html", mensaje="Error en la consulta a la api, vuelva a intentarlo en unos minutos.")
     euros_invertidos = disponible[0]
     euros_invertidos = '{:,.5f}'.format(euros_invertidos).replace(",", "@").replace(".", ",").replace("@", ".")  
-    #euros_invertidos = round(disponible[0], 5)
     valor_actual = disponible[1]
     valor_actual = '{:,.5f}'.format(valor_actual).replace(",", "@").replace(".", ",").replace("@", ".")
-    #valor_actual = round(disponible[1], 5)
 
     return render_template("status.html", euros_invertidos=euros_invertidos, valor_actual=valor_actual)

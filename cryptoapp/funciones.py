@@ -129,15 +129,4 @@ def inversion():
                 return valor
             valor_actual += conversion['data']['quote']['EUR']['price']
 
-        '''
-        if fila[3] == 'BTC' and fila[5] == 'EUR':
-            conversion = consultaApi(clave, 'EUR', MONEDAS[clave])
-            MONEDAS[fila[3]] -= fila[4] 
-            MONEDAS['EUR'] += conversion[0]['data']['quote']['EUR']['price']
-        
-            pass
-    
-            conversion = consultaApi('BTC', 'EUR', fila[4])
-        '''
-
     return euros_invertidos, valor_actual

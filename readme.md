@@ -1,6 +1,6 @@
 # Proyecto de aplicación de simulación de compra/ venta de criptomonedas para Bootcamp cero 4ª Edición.
 
-La aplicación está instalada en un servidor de Amazon Web Services en la IP: 18.223.109.83
+La aplicación está instalada en un servidor de Amazon Web Services en la IP: 
 
 # Instrucciones de instalación:
 
@@ -22,7 +22,7 @@ La aplicación está instalada en un servidor de Amazon Web Services en la IP: 1
 ```
     pip install -r requirements.txt
 ```
-4. Renombrar el archivo config_template.py a config.py y en SECRET_KEY escribir tu propia clave dentro de las comillas simples, esta clave no debe llevar comillas simples, tambien en API_KEY debes poner la key de acceso a la api de coinmarketcap.
+4. Renombrar el archivo config_template.py a config.py; en SECRET_KEY escribir tu propia clave dentro de las comillas simples, esta clave no debe llevar comillas simples, tambien en API_KEY debes poner la key de acceso a la api de coinmarketcap; existe un tercer campo que es DB_KEY donde debes poner dentro de las comillas simples el nombre del fichero de la base de datos que viene incorporado y que es datos1.db.
 
 5. Crear la variable de entorno `FLASK_APP` con el valor `<nombredefichero>.py`
 
