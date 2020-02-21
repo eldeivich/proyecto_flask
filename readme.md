@@ -7,6 +7,8 @@ La aplicación está instalada en un servidor de Amazon Web Services en la IP: 1
 git clone <Dirección web de github copiada> <nombre que queramos dar a la aplicación>
 ```
 
+### Abrimos la carpeta en nuestro Visual Studio Code y abrimos terminal.
+
 # Instrucciones de instalación:
 
 1. Crear el entorno virtual en el terminal a trabajar
